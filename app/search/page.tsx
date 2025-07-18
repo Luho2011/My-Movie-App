@@ -6,7 +6,6 @@ import MovieCard from '@/components/MovieCard';
 import { MovieAPI } from '@/types/movieAPI';
 
 type Props = {
-   // @ts-expect-error: Next.js erwartet intern einen Promise-Typ, wir ignorieren den Typfehler temporär
   searchParams: { query?: string; genre?: string };
 };
 
@@ -14,7 +13,7 @@ type Props = {
 export default async function HomePage({ searchParams }: Props) {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email || "";
- // @ts-expect-error: Ignoriere hier den möglichen Typfehler bei searchParams
+
   const query = searchParams.query?.trim();
   const genre = searchParams.genre;
 
