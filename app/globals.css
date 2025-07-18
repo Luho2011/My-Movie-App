@@ -1,9 +1,31 @@
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #3b3b3b;
+  --foreground: #d1d1d1;
 }
+
+@layer base {
+  body {
+    @apply bg-[#3b3b3b];
+  }
+}
+
+@layer components {
+  .addButton {
+     @apply mt-2 absolute bottom-2 left-1/2 w-40 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer
+            opacity-0 group-hover:opacity-80 transition-opacity
+  }
+  .deleteButton {
+    @apply  bg-red-800 text-white px-4 py-2 rounded hover:bg-red-600 absolute bottom-6 left-1/2 w-40 -translate-x-1/2 cursor-pointer
+            opacity-0 group-hover:opacity-80 transition-opacity
+  }
+}
+
+
 
 @theme inline {
   --color-background: var(--background);
