@@ -1,5 +1,4 @@
 'use client';
-import Image from 'next/image'
 import { useActionState } from 'react';
 import { addToWatchlist } from '@/app/actions/watchlist';
 import React from 'react';
