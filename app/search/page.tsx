@@ -5,8 +5,12 @@ import NavBar from "@/components/NavBar";
 import MovieCard from '@/components/MovieCard';
 import { MovieAPI } from '@/types/movieAPI';
 
+type SearchParams = {
+  [key: string]: string | undefined;
+};
+
 type Props = {
-  searchParams: { query?: string; genre?: string };
+  searchParams: SearchParams;
 };
 
 
