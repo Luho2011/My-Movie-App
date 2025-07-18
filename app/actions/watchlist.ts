@@ -3,7 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
 
-export async function addToWatchlist(prevState: any, formData: FormData) {
+export async function addToWatchlist(prevState: unknown, formData: FormData) {
     
     const movieId = formData.get('movieId') as string;
     const title = formData.get('title') as string;
@@ -24,7 +24,7 @@ export async function addToWatchlist(prevState: any, formData: FormData) {
 
 
 
-export async function removeFromWatchlist(_: any, formData: FormData) {
+export async function removeFromWatchlist(_: unknown, formData: FormData) {
   const movieId = formData.get('movieId') as string;
   const email = formData.get('email') as string;
 

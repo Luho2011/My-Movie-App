@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image'
 import { useActionState } from 'react';
 import { addToWatchlist } from '@/app/actions/watchlist';
 import React from 'react';
@@ -26,7 +27,7 @@ export default function MovieCard({ movie, userEmail }: Props) {
   <form action={formAction} className="group p-3 rounded w-60 transition-transform duration-300 hover:scale-110">
         {poster_path && (
           <div className='relative'>
-            <img
+            <Image
               src={`https://image.tmdb.org/t/p/w500${poster_path}`}
               alt={movie.title}
               className="mt-2 rounded"

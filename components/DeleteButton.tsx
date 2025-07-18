@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image'
 import React from 'react'
 import { useActionState } from 'react';
 import { removeFromWatchlist } from '@/app/actions/watchlist';
@@ -17,7 +18,7 @@ export default function DeleteButton({ movie, email }: Props) {
   return (
     <form action={formAction} className="group p-3 rounded w-60 relative transition-transform duration-300 hover:scale-110">
      <div className='relative'>
-        <img
+        <Image
           src={`https://image.tmdb.org/t/p/w500${posterPath}`}
           alt={title}
           className="mt-2 rounded"
