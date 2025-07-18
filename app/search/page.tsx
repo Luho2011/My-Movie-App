@@ -5,17 +5,23 @@ import NavBar from "@/components/NavBar";
 import MovieCard from '@/components/MovieCard';
 import { MovieAPI } from '@/types/movieAPI';
 
+type SearchParams = {
+  query?: string;
+  genre?: string;
+};
+
 type Props = {
-  searchParams: { query?: string; genre?: string };
+  searchParams: Promise<SearchParams>;
 };
 
 
 export default async function HomePage({ searchParams }: Props) {
+  const params = await searchParams;
   const session = await getServerSession(authOptions);
   const email = session?.user?.email || "";
 
-  const query = searchParams.query?.trim();
-  const genre = searchParams.genre;
+  const query = params.query?.trim();
+  const genre = params.genre;
 
   const movies: MovieAPI[] = query || genre ? await fetchMovies(query, genre) : [];
  
