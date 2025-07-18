@@ -18,7 +18,7 @@ export default function DeleteButton({ movie, email }: Props) {
   return (
     <form action={formAction} className="group p-3 rounded w-60 relative transition-transform duration-300 hover:scale-110">
      <div className='relative'>
-        <Image
+        <img
           src={`https://image.tmdb.org/t/p/w500${posterPath}`}
           alt={title}
           className="mt-2 rounded"

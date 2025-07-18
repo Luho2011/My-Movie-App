@@ -27,7 +27,7 @@ export default function MovieCard({ movie, userEmail }: Props) {
   <form action={formAction} className="group p-3 rounded w-60 transition-transform duration-300 hover:scale-110">
         {poster_path && (
           <div className='relative'>
-            <Image
+            <img
               src={`https://image.tmdb.org/t/p/w500${poster_path}`}
               alt={movie.title}
               className="mt-2 rounded"
