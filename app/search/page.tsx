@@ -5,9 +5,13 @@ import NavBar from "@/components/NavBar";
 import MovieCard from '@/components/MovieCard';
 import { MovieAPI } from '@/types/movieAPI';
 
+type SearchParams = Record<string, string | undefined>;
 
+type Props = {
+  searchParams: SearchParams;
+};
 
-export default async function HomePage({ searchParams }: { searchParams: { query?: string; genre?: string } }) {
+export default async function HomePage({ searchParams }: Props) {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email || "";
 
