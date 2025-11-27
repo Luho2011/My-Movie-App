@@ -1,8 +1,9 @@
 export type WatchlistDB = {
   id: string;
+  userId: string;
   movieId: string;
   title: string;
-  poster_path: string | null; 
-  posterPath: string;
-  userId: string;
+  posterPath: string | null;   
+  poster_path?: string | null;    
+  imdbId: string | null;         
 };
