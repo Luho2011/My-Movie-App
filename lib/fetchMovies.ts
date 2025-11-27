@@ -4,6 +4,12 @@ type TMDBListResponse = {
   results: Omit<MovieAPI, "imdb_id">[];
 };
 
+// Basis-Typ ohne imdb_id
+export type MovieBasic = Omit<MovieAPI, "imdb_id">;
+
+// Typ mit imdb_id
+export type MovieWithImdb = MovieAPI;
+
 export async function fetchMovies(
   query?: string,
   genre?: string
