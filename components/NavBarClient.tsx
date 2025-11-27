@@ -4,9 +4,14 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useState } from "react";
 import SearchForm from "./SearchForm";
 import GenreFilterClient from "./GenreFilterClient";
+import { Session } from "next-auth";
 
+type NavBarClientProps = {
+  session: Session;
+  genres: { id: number; name: string }[];
+}
 
-export default function NavBarClient({ session, genres }) {
+export default function NavBarClient({ session, genres }: NavBarClientProps) {
     const [menuOpen, setMenuOpen] = useState(false);
 
   return (
