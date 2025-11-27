@@ -59,7 +59,9 @@ model Watchlist {
   userId  String
   movieId String
   title   String
-  posterPath String?
+  poster_path String?
+  posterPath  String?
+  imdbId      String? 
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

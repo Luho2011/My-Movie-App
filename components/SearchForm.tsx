@@ -1,35 +1,46 @@
 'use client';
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-import React from 'react'
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-
+import { useSearchParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function SearchForm() {
-  const [input, setInput] = useState("");
+  const searchParams = useSearchParams();
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
+  const currentQuery = searchParams.get("query") || "";
+  const [input, setInput] = useState(currentQuery);
 
-    router.push(`/search?query=${encodeURIComponent(input.trim())}`);
-  };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const cleaned = input.trim();
+
+      // verhindern, dass wir immer wieder das Gleiche in die URL pushen
+      if (cleaned === currentQuery) return;
+
+      //aktuelle url holen, welche leer ist
+      const params = new URLSearchParams(searchParams.toString());
+
+      if (cleaned.length > 0) {
+        //params: querry=cleaned
+        params.set("query", cleaned);
+      } else {
+        params.delete("query");
+      }
+
+      router.replace(`/?${params.toString()}`); // replace = kein Browser-History-Spam
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [input, currentQuery, router, searchParams]);
 
   return (
-      <form onSubmit={handleSubmit} className="flex">
+    <div className="justify-center">
       <input
-        placeholder="Search Movies..."
-        value ={input}
+        className="[@media(max-width:750px)]:w-[250px] h-[41px] w-[500px] pl-4 pr-4 py-1 border rounded-2xl border-gray-300 focus:outline-none"
+        placeholder="Search Movie..."
+        value={input}
         onChange={(e) => setInput(e.target.value)}
-        className="p-2 border rounded-l-2xl border-gray-300 w-full focus:outline-none"
       />
-      <button
-        type="submit"
-        className="px-5 py-3 bg-blue-600 text-white rounded-r-2xl border-r-0 hover:bg-blue-700 cursor-pointer"
-      >
-        <MagnifyingGlassIcon className="h-5 w-5" />
-      </button>
-    </form>
-  )
+    </div>
+  );
 }
+

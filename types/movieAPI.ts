@@ -5,4 +5,5 @@ export type MovieAPI = {
   poster_path: string | null;
   userId: string;
   posterPath: string;
+  imdb_id?: string | null;
 };

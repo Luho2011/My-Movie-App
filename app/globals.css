@@ -25,6 +25,16 @@
   }
 }
 
+/* Scrollbar ausblenden */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE und Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
 
 
 @theme inline {

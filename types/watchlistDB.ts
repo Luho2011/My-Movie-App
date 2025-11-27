@@ -2,6 +2,7 @@ export type WatchlistDB = {
   id: string;
   movieId: string;
   title: string;
-  posterPath: string | null;
+  poster_path: string | null; 
+  posterPath: string;
   userId: string;
 };

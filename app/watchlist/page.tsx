@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { prisma } from '@/lib/prisma';
 import { WatchlistDB } from '@/types/watchlistDB';
-import DeleteButton from '@/components/DeleteButton';
+import MovieCard from "@/components/MovieCard";
 
 
 export default async function WatchlistPage() {
@@ -27,7 +27,7 @@ export default async function WatchlistPage() {
   return (
     <div>
       <div className='bg-gray-950 flex justify-between sticky top-0 h-15 w-full p-2 z-10'>
-        <Link href="/search">
+        <Link href="/">
           <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer">
             Homepage
           </button>
@@ -47,10 +47,16 @@ export default async function WatchlistPage() {
        
       <div className="flex flex-wrap justify-center gap-3 p-2 mt-8">
         {watchlist.map((movie) => (
-          <DeleteButton
+          <MovieCard
             key={movie.id}
-            movie={movie}
-            email={email}
+            movie={{
+              id: Number(movie.movieId), // TMDB-ID
+              title: movie.title,
+              poster_path: movie.poster_path ?? movie.posterPath ?? null,
+              imdb_id: movie.imdbId ?? null, // <- camelCase beachten
+            }}
+            userEmail={email}
+            isWatchlist={true}
           />
         ))}
       </div> 

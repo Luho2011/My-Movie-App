@@ -16,7 +16,7 @@ export default function GenreFilterClient({ genres }: { genres: Genre[] }) {
       onMouseLeave={() => setOpen(false)}
       className="relative inline-block"
     >
-      <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer">
+      <button className="bg-blue-600 text-white px-[22px] py-2 rounded [@media(max-width:1075px)]:border-1 hover:bg-blue-700 transition cursor-pointer">
         Genres
       </button>
 
@@ -25,7 +25,7 @@ export default function GenreFilterClient({ genres }: { genres: Genre[] }) {
           {genres.map((genre) => (
             <Link
               key={genre.id}
-              href={`/search?genre=${genre.id}`}
+              href={`/?genre=${genre.id}`}
               className="block px-2 py-1 hover:bg-gray-800 rounded text-white"
             >
               {genre.name}
