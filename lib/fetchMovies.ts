@@ -1,25 +1,13 @@
-// types for TMDB responses
-export type MovieBasic = {
-  id: number;
-  title: string;
-  poster_path: string | null;
-  backdrop_path: string | null;
-  overview: string;
-  release_date: string;
-};
-
-export type MovieWithImdb = MovieBasic & {
-  imdb_id: string | null;
-};
+import type { MovieAPI } from "@/types/movieAPI";
 
 type TMDBListResponse = {
-  results: MovieBasic[];
+  results: Omit<MovieAPI, "imdb_id">[];
 };
 
 export async function fetchMovies(
   query?: string,
   genre?: string
-): Promise<MovieWithImdb[]> {
+): Promise<MovieAPI[]> {
   const apiKey = process.env.TMDB_API_KEY;
 
   let url = "";
@@ -35,7 +23,7 @@ export async function fetchMovies(
   const data: TMDBListResponse = await res.json();
   const movies = data.results;
 
-  const detailPromises = movies.map(async (m): Promise<MovieWithImdb> => {
+  const detailPromises = movies.map(async (m): Promise<MovieAPI> => {
     const r2 = await fetch(
       `https://api.themoviedb.org/3/movie/${m.id}/external_ids?api_key=${apiKey}`
     );
@@ -45,5 +33,6 @@ export async function fetchMovies(
 
   return Promise.all(detailPromises);
 }
+
 
 
