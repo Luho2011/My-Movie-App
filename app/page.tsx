@@ -17,7 +17,12 @@ type Props = {
   searchParams: Promise<SearchParams>;
 };
 
-function pickRandomGenres(genres: any[], count = 3) {
+type Genre = {
+  id: number;
+  name: string;
+};
+
+function pickRandomGenres(genres: Genre[], count = 3) {
   return [...genres].sort(() => Math.random() - 0.5).slice(0, count);
 }
 
