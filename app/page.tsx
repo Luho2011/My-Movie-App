@@ -43,7 +43,7 @@ export default async function HomePage({ searchParams }: Props) {
 
   if (!query && !genre) {
     const allGenres = await fetchGenres();
-    const randomGenres = pickRandomGenres(allGenres, 3);
+    const randomGenres = pickRandomGenres(allGenres, 7);
 
     for (const g of randomGenres) {
       const moviesByGenre = await fetchMoviesByGenre(g.id, 20);
@@ -69,7 +69,7 @@ export default async function HomePage({ searchParams }: Props) {
 
       {/* Wenn KEINE Suche → Genre-Slider anzeigen */}
       {!query && !genre && (
-        <div className="flex flex-col w-[90%] px-4">
+        <div className="flex flex-col w-full">
           {genreSections.map((section) => (
             <MovieSlider
               key={section.name}

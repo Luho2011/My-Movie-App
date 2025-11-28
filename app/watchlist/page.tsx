@@ -44,22 +44,25 @@ export default async function WatchlistPage() {
             </form>
           </div>
       </div>
-       
-      <div className="flex flex-wrap justify-center gap-3 p-2 mt-8">
-        {watchlist.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            movie={{
-              id: Number(movie.movieId), // TMDB-ID
-              title: movie.title,
-              poster_path: movie.poster_path ?? movie.posterPath ?? null,
-              imdb_id: movie.imdbId ?? null, // <- camelCase beachten
-            }}
-            userEmail={email}
-            isWatchlist={true}
-          />
-        ))}
-      </div> 
+
+     <div className="flex flex-col items-center mt-5">
+      <h1 className="text-5xl mb-5">Meine Watchlist</h1>
+        <div className="flex flex-wrap justify-center gap-3 p-2 mt-8">
+          {watchlist.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              movie={{
+                id: Number(movie.movieId), // TMDB-ID
+                title: movie.title,
+                poster_path: movie.poster_path ?? movie.posterPath ?? null,
+                imdb_id: movie.imdbId ?? null, // <- camelCase beachten
+              }}
+              userEmail={email}
+              isWatchlist={true}
+            />
+          ))}
+        </div> 
+      </div>
     </div>
   );
 }
