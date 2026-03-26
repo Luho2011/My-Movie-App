@@ -1,18 +1,11 @@
 import React from 'react'
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 import NavBarClient from "./NavBarClient";
-
 
 
 export default async function NavBar() {
    const session = await getServerSession(authOptions);
-   
-
-  if (!session) {
-    redirect("/login"); 
-  }
 
   const apiKey = process.env.TMDB_API_KEY;
   const res = await fetch(

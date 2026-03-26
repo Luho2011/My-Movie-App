@@ -7,7 +7,7 @@ import GenreFilterClient from "./GenreFilterClient";
 import { Session } from "next-auth";
 
 type NavBarClientProps = {
-  session: Session;
+  session: Session | null;
   genres: { id: number; name: string }[];
 }
 
@@ -59,6 +59,8 @@ export default function NavBarClient({ session, genres }: NavBarClientProps) {
             </div> 
         </div>
       <div className='flex items-center gap-4'>
+       {session ? (
+        <>
         <p className="[@media(max-width:925px)]:hidden text-xl">{session.user?.name}</p>
         <form action="/api/auth/signout" method="post">
           <button
@@ -68,7 +70,16 @@ export default function NavBarClient({ session, genres }: NavBarClientProps) {
             Logout
           </button>
         </form>
+        </>
+       ) : (
+          <Link href="/login">
+            <button className="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition cursor-pointer">
+              Login
+            </button>
+          </Link>
+       )} 
       </div>
+
     </div>
   )
 }
