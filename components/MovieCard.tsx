@@ -25,6 +25,7 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
     }
   }, [state.message]);
 
+  //Imdb link entweder nach id oder titel des films...unten als link aufrufen
   const imdbUrl = movie.imdb_id
   ? `https://www.imdb.com/title/${movie.imdb_id}/`
   : `https://www.imdb.com/find?q=${encodeURIComponent(movie.title)}`;
@@ -40,7 +41,7 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
             className="mt-2 rounded h-[350px]"
           />
         )}
-
+        {/* Prüfen, ob movie schon in watchlist ist, dann deletebutton anzeigen...sonst addbutton */}
         {isWatchlist ? (
           <DeleteButton movie={movie} userEmail={userEmail} />
         ) : (

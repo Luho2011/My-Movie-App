@@ -16,6 +16,7 @@ export async function fetchMovies(
 ): Promise<MovieAPI[]> {
   const apiKey = process.env.TMDB_API_KEY;
 
+  // dynamische url je nachdem ob per query oder genre gesucht wird
   let url = "";
   if (query) {
     url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(

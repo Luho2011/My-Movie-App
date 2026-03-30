@@ -6,9 +6,11 @@ export default function SearchForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  // query aus url lesen
   const currentQuery = searchParams.get("query") || "";
   const [input, setInput] = useState(currentQuery);
 
+  //live suche mit liveupdates der angezeigen Filme
   useEffect(() => {
     const timeout = setTimeout(() => {
       const cleaned = input.trim();
@@ -20,13 +22,13 @@ export default function SearchForm() {
       const params = new URLSearchParams(searchParams.toString());
 
       if (cleaned.length > 0) {
-        //params: querry=cleaned
+        //params: setzt query in url
         params.set("query", cleaned);
       } else {
         params.delete("query");
       }
 
-      router.replace(`/?${params.toString()}`); // replace = kein Browser-History-Spam
+      router.replace(`/?${params.toString()}`); // replace = kein Browser-History-Spam, aktualisiert url
     }, 300);
 
     return () => clearTimeout(timeout);

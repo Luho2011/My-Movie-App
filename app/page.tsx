@@ -22,6 +22,7 @@ type Genre = {
   name: string;
 };
 
+// function für random genres
 function pickRandomGenres(genres: Genre[], count = 3) {
   return [...genres].sort(() => Math.random() - 0.5).slice(0, count);
 }
@@ -45,6 +46,7 @@ export default async function HomePage({ searchParams }: Props) {
     const allGenres = await fetchGenres();
     const randomGenres = pickRandomGenres(allGenres, 7);
 
+    //Über die randomGenres mappen und in genreSections pushen 
     for (const g of randomGenres) {
       const moviesByGenre = await fetchMoviesByGenre(g.id, 20);
       genreSections.push({

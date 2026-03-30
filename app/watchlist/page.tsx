@@ -10,6 +10,7 @@ import MovieCard from "@/components/MovieCard";
 export default async function WatchlistPage() {
     const session = await getServerSession(authOptions);
     
+    // Nur für logged in users
       if (!session) {
         redirect("/login"); 
       }
@@ -55,7 +56,7 @@ export default async function WatchlistPage() {
                 id: Number(movie.movieId), // TMDB-ID
                 title: movie.title,
                 poster_path: movie.poster_path ?? movie.posterPath ?? null,
-                imdb_id: movie.imdbId ?? null, // <- camelCase beachten
+                imdb_id: movie.imdbId ?? null, 
               }}
               userEmail={email}
               isWatchlist={true}
