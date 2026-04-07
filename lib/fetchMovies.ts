@@ -31,9 +31,11 @@ export async function fetchMovies(
   const movies = data.results;
 
   const detailPromises = movies.map(async (m): Promise<MovieAPI> => {
+    // fetche alle von tmdb bereitgestellten external ids (imdb_id)
     const r2 = await fetch(
       `https://api.themoviedb.org/3/movie/${m.id}/external_ids?api_key=${apiKey}`
     );
+    // in ext die imdb_id speichern und im spread operator anhängen
     const ext: { imdb_id: string | null } = await r2.json();
     return { ...m, imdb_id: ext.imdb_id ?? null };
   });

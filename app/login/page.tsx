@@ -13,6 +13,19 @@ export default function LoginPage() {
       >
         Login mit Google
       </button>
+
+      <button
+        onClick={() =>
+          signIn("credentials", {
+            email: "demo@example.com",
+            password: "demo123",
+            callbackUrl: "/watchlist",
+          })
+        }
+        className="border px-6 py-2 rounded shadow hover:bg-gray-100 transition cursor-pointer"
+      >
+        Demo Login
+      </button>
     </div>
   );
 }
