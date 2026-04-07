@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+#  Movie App
 
-## Getting Started
+Web application for searching and displaying movie data using external APIs.
 
-First, run the development server:
+## 🚀 Live Demo
+👉 https://my-movie-app-ashen-omega.vercel.app/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠️ Tech Stack
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Vercel
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
+- Movie search functionality  
+- Display of external API data  
+- Dynamic UI updates
+- Personal watchlist  
+- Responsive design
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧠 Architecture & Implementation
+- Integration of external APIs and handling of asynchronous data flows  
+- Clean presentation of large datasets 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ⚙️ Challenges & Decisions
 
-## Learn More
+1. API Integration
+   
+   Integrating and handling API responses from The Movie Database (TMDb) to fetch dynamic movie data efficiently and ensure smooth rendering.
 
-To learn more about Next.js, take a look at the following resources:
+2. Dynamic UI Updates
+   
+   Managing dynamic UI updates to reflect search results, different movie genres, and user interactions in real-time.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Persistent Watchlist
+   
+   Creating a persistent watchlist for logged-in users to store favorite movies across sessions.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📸 Screenshots
+![Screenshot movie3](https://github.com/user-attachments/assets/ea53af71-203b-4827-a803-152ed00ed6a3)
+![Screenshot movie2](https://github.com/user-attachments/assets/0574c2ce-2b49-42c5-806a-56766c59301c)
+![Screenshot movie1](https://github.com/user-attachments/assets/c570fc02-9e96-4104-a1f7-3d79652a8b35)
