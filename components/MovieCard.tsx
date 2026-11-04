@@ -41,6 +41,13 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
             className="mt-2 rounded h-[350px]"
           />
         )}
+        {/* Ratings (nur sichtbar, wenn nach Rating gefiltert wird) */}
+        {(movie.imdb_rating || movie.metascore) && (
+          <div className="absolute top-4 left-5 bg-black/70 text-white text-sm px-2 py-1 rounded">
+            {movie.imdb_rating && <span>⭐ {movie.imdb_rating}</span>}
+            {movie.metascore && <span className="ml-2">MC {movie.metascore}</span>}
+          </div>
+        )}
         {/* Prüfen, ob movie schon in watchlist ist, dann deletebutton anzeigen...sonst addbutton */}
         {isWatchlist ? (
           <DeleteButton movie={movie} userEmail={userEmail} />

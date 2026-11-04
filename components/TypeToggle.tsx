@@ -5,12 +5,16 @@ import { MediaType } from '@/types/movieAPI';
 
 export default function TypeToggle({ type }: { type: MediaType }) {
   const searchParams = useSearchParams();
-  const query = searchParams.get("query");
 
-  // query behalten, genre nicht (Genre-IDs sind bei Filmen und Serien unterschiedlich)
-  const queryParam = query ? `query=${encodeURIComponent(query)}` : "";
-  const movieHref = queryParam ? `/?${queryParam}` : "/";
-  const tvHref = queryParam ? `/?type=tv&${queryParam}` : "/?type=tv";
+  // query und ratings behalten, genre nicht (Genre-IDs sind bei Filmen und Serien unterschiedlich)
+  const params = new URLSearchParams();
+  for (const key of ["query", "imdb", "meta"]) {
+    const value = searchParams.get(key);
+    if (value) params.set(key, value);
+  }
+  const movieHref = `/?${params.toString()}`;
+  params.set("type", "tv");
+  const tvHref = `/?${params.toString()}`;
 
   return (
     <div className="flex rounded overflow-hidden [@media(max-width:1075px)]:border-1">

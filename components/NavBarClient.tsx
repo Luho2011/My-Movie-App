@@ -6,6 +6,7 @@ import SearchForm from "./SearchForm";
 import GenreFilterClient from "./GenreFilterClient";
 import { Session } from "next-auth";
 import TypeToggle from "./TypeToggle";
+import RatingFilterClient from "./RatingFilterClient";
 import { MediaType } from "@/types/movieAPI";
 
 type NavBarClientProps = {
@@ -45,6 +46,9 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
                  <div className="">
                     <GenreFilterClient genres={genres} type={type} />
                  </div>
+                 <div className="">
+                    <RatingFilterClient />
+                 </div>
             </div>
         )}
       </div>
@@ -60,6 +64,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
           <div className="[@media(max-width:1075px)]:hidden flex gap-4">
             <TypeToggle type={type} />
             <GenreFilterClient genres={genres} type={type} />
+            <RatingFilterClient />
           </div>
             <div className="">
              <SearchForm/>

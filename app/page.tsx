@@ -12,6 +12,8 @@ type SearchParams = {
   query?: string;
   genre?: string;
   type?: string;
+  imdb?: string;
+  meta?: string;
 };
 
 type Props = {
@@ -38,14 +40,20 @@ export default async function HomePage({ searchParams }: Props) {
   // Filme oder Serien (?type=tv)
   const type = params.type === "tv" ? "tv" : "movie";
 
-  // Wenn query ODER genre aktiv ist → Movies suchen
-  const movies: MovieAPI[] =
-    query || genre ? await fetchMovies(query, genre, type) : [];
+  // Mindest-Ratings (IMDb Rating, Metascore)
+  const minImdb = Number(params.imdb) || 0;
+  const minMeta = Number(params.meta) || 0;
+  const isSearching = query || genre || minImdb || minMeta;
+
+  // Wenn query, genre ODER rating-filter aktiv ist → Movies suchen
+  const movies: MovieAPI[] = isSearching
+    ? await fetchMovies(query, genre, type, minImdb, minMeta)
+    : [];
 
   // Genre-Slider nur laden, wenn NICHT gesucht wird
   const genreSections: { name: string; movies: MovieAPI[] }[] = [];
 
-  if (!query && !genre) {
+  if (!isSearching) {
     const allGenres = await fetchGenres(type);
     const randomGenres = pickRandomGenres(allGenres, 7);
 
@@ -64,7 +72,7 @@ export default async function HomePage({ searchParams }: Props) {
       <NavBar type={type} />
 
       {/* Wenn Suchbegriff aktiv → Suchergebnisse anzeigen */}
-      {(query || genre) && (
+      {isSearching && (
         <div className="flex flex-wrap justify-center gap-6 p-4 w-full">
           {movies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} userEmail={email} />
@@ -73,7 +81,7 @@ export default async function HomePage({ searchParams }: Props) {
       )}
 
       {/* Wenn KEINE Suche → Genre-Slider anzeigen */}
-      {!query && !genre && (
+      {!isSearching && (
         <div className="flex flex-col w-full">
           {genreSections.map((section) => (
             <MovieSlider

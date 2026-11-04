@@ -7,6 +7,8 @@ export type MovieAPI = {
   overview?: string | null;
   release_date?: string | null;
   media_type?: "movie" | "tv";
+  imdb_rating?: number | null;
+  metascore?: number | null;
 };
 
 export type MediaType = "movie" | "tv";
