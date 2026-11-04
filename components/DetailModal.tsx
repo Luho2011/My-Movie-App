@@ -28,8 +28,10 @@ export default function DetailModal({ movie, onClose }: Props) {
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  const imdbUrl = movie.imdb_id
-    ? `https://www.imdb.com/title/${movie.imdb_id}/`
+  // imdb_id kommt meist erst mit den Details (wird auf der Startseite nicht vorab geladen)
+  const imdbId = movie.imdb_id ?? details?.imdb_id;
+  const imdbUrl = imdbId
+    ? `https://www.imdb.com/title/${imdbId}/`
     : `https://www.imdb.com/find?q=${encodeURIComponent(movie.title)}`;
 
   // createPortal, damit das Fenster nicht in der (skalierten) Card hängt

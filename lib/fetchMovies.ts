@@ -53,29 +53,35 @@ export async function fetchMovies(
   // gibt es noch weitere Seiten, die man nachladen kann?
   const hasMore = pageTotal < responses[0].total_pages;
 
+  // Ohne Rating-Filter: imdb_id nicht vorab laden (kommt lazy über Details / Watchlist)
+  if (!hasRatingFilter) {
+    return {
+      movies: movies.map((m) => ({ ...m, title: m.title ?? m.name, media_type: type, imdb_id: null })),
+      hasMore,
+    };
+  }
+
   const detailPromises = movies.map(async (m): Promise<MovieAPI> => {
-    // fetche alle von tmdb bereitgestellten external ids (imdb_id)
+    // imdb_id wird für OMDb gebraucht → external ids von tmdb holen
     const r2 = await fetch(
       `https://api.themoviedb.org/3/${type}/${m.id}/external_ids?api_key=${apiKey}`,
-      { next: { revalidate: 3600 } }
+      { next: { revalidate: 86400 } }
     );
-    // in ext die imdb_id speichern und im spread operator anhängen
     const ext: { imdb_id: string | null } = await r2.json();
     const imdbId = ext.imdb_id ?? null;
 
-    const movie: MovieAPI = { ...m, title: m.title ?? m.name, media_type: type, imdb_id: imdbId };
-
-    // Ratings nur laden, wenn gefiltert wird (spart OMDb-Anfragen)
-    if (hasRatingFilter) {
-      const ratings = await fetchRatings(imdbId);
-      movie.imdb_rating = ratings.imdbRating;
-      movie.metascore = ratings.metascore;
-    }
-    return movie;
+    const ratings = await fetchRatings(imdbId);
+    return {
+      ...m,
+      title: m.title ?? m.name,
+      media_type: type,
+      imdb_id: imdbId,
+      imdb_rating: ratings.imdbRating,
+      metascore: ratings.metascore,
+    };
   });
 
   const all = await Promise.all(detailPromises);
-  if (!hasRatingFilter) return { movies: all, hasMore };
 
   // Titel ohne Rating fliegen raus, sobald ein Filter aktiv ist
   return {

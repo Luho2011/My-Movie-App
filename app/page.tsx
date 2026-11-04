@@ -63,20 +63,19 @@ export default async function HomePage({ searchParams }: Props) {
   moreParams.set("pages", String(pageCount + 1));
 
   // Genre-Slider nur laden, wenn NICHT gesucht wird
-  const genreSections: { name: string; movies: MovieAPI[] }[] = [];
+  let genreSections: { name: string; movies: MovieAPI[] }[] = [];
 
   if (!isSearching) {
     const allGenres = await fetchGenres(type);
     const randomGenres = pickRandomGenres(allGenres, 7);
 
-    //Über die randomGenres mappen und in genreSections pushen 
-    for (const g of randomGenres) {
-      const moviesByGenre = await fetchMoviesByGenre(g.id, 20, type);
-      genreSections.push({
+    // alle Genres gleichzeitig laden statt nacheinander
+    genreSections = await Promise.all(
+      randomGenres.map(async (g) => ({
         name: g.name,
-        movies: moviesByGenre,
-      });
-    }
+        movies: await fetchMoviesByGenre(g.id, 20, type),
+      }))
+    );
   }
 
   return (

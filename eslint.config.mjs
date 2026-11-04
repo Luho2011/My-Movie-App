@@ -11,6 +11,13 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    rules: {
+      // Bilder kommen direkt vom TMDB-CDN (schon passende Größen) → next/image bringt hier wenig
+      // und würde Vercels Image-Optimization-Kontingent verbrauchen
+      "@next/next/no-img-element": "off",
+    },
+  },
 ];
 
 export default eslintConfig;

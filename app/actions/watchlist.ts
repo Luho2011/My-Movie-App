@@ -7,9 +7,23 @@ export async function addToWatchlist(prevState: unknown, formData: FormData) {
   const movieId = formData.get('movieId') as string;
   const title = formData.get('title') as string;
   const posterPath = formData.get('posterPath') as string;
-  const imdbId = formData.get('imdbId') as string | null;
+  let imdbId = (formData.get('imdbId') as string | null) || null;
   const email = formData.get('email') as string;
   const mediaType = (formData.get('mediaType') as string) || 'movie';
+
+  // imdb_id wird auf der Startseite nicht vorab geladen → hier bei Bedarf nachholen
+  if (!imdbId) {
+    try {
+      const res = await fetch(
+        `https://api.themoviedb.org/3/${mediaType === 'tv' ? 'tv' : 'movie'}/${movieId}/external_ids?api_key=${process.env.TMDB_API_KEY}`,
+        { next: { revalidate: 86400 } }
+      );
+      const ext: { imdb_id?: string | null } = await res.json();
+      imdbId = ext.imdb_id ?? null;
+    } catch {
+      imdbId = null;
+    }
+  }
 
   await prisma.watchlist.create({
     data: {

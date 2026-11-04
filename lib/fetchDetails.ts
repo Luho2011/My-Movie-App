@@ -2,6 +2,7 @@ import type { MediaType } from "@/types/movieAPI";
 
 export type Details = {
   title: string;
+  imdb_id: string | null;
   year: string | null;
   genres: string[];
   overview: string | null;
@@ -18,7 +19,7 @@ export async function fetchDetails(type: MediaType, id: number): Promise<Details
   const apiKey = process.env.TMDB_API_KEY;
 
   const res = await fetch(
-    `https://api.themoviedb.org/3/${type}/${id}?api_key=${apiKey}&language=de-DE&append_to_response=videos,credits,watch/providers&include_video_language=de,en`,
+    `https://api.themoviedb.org/3/${type}/${id}?api_key=${apiKey}&language=de-DE&append_to_response=videos,credits,watch/providers,external_ids&include_video_language=de,en`,
     { next: { revalidate: 3600 } }
   );
   const d = await res.json();
@@ -30,6 +31,7 @@ export async function fetchDetails(type: MediaType, id: number): Promise<Details
 
   return {
     title: d.title ?? d.name,
+    imdb_id: d.imdb_id ?? d.external_ids?.imdb_id ?? null,
     year: date ? date.slice(0, 4) : null,
     genres: (d.genres ?? []).map((g: { name: string }) => g.name),
     overview: d.overview || null,

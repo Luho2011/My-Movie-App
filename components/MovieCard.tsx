@@ -31,8 +31,10 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
       <div onClick={() => setOpen(true)} className='cursor-pointer group w-52 rounded-xl overflow-hidden shadow-lg shadow-black/40 transition duration-300 hover:scale-105 hover:z-10 relative'>
         {poster_path && (
           <img
-            src={`https://image.tmdb.org/t/p/w500${poster_path}`}
+            src={`https://image.tmdb.org/t/p/w342${poster_path}`}
             alt={title}
+            loading="lazy"
+            decoding="async"
             className="block w-full aspect-[2/3] object-cover"
           />
         )}
