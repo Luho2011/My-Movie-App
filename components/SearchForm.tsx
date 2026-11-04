@@ -37,9 +37,9 @@ export default function SearchForm() {
   }, [input, currentQuery, router, searchParams]);
 
   return (
-    <div className="justify-center">
+    <div className="w-full min-w-0">
       <input
-        className="[@media(max-width:750px)]:w-[250px] h-[41px] w-[500px] pl-5 pr-4 py-1 bg-white/10 border border-white/10 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="h-[41px] w-full max-w-[500px] pl-5 pr-4 py-1 bg-white/10 border border-white/10 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         placeholder={isTv ? "Search Series..." : "Search Movie..."}
         value={input}
         onChange={(e) => setInput(e.target.value)}

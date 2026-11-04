@@ -21,7 +21,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
   return (
     <div className='bg-gray-950/90 backdrop-blur-md border-b border-white/10 flex justify-between items-center sticky py-2 top-0 h-15 w-full z-25 [@media(min-width:1075px)]:px-2'>
       {/* --- MOBILE HEADER --- */}
-     <div className="relative left-0 flex px-4 h-16 [@media(min-width:1075px)]:hidden">
+     <div className="relative left-0 flex shrink-0 px-3 h-16 [@media(min-width:1075px)]:hidden">
       <button
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Menü öffnen"
@@ -60,24 +60,24 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
           Watchlist
         </button>
       </Link>
-        <div className='flex gap-10 items-center'>
+        <div className='flex flex-1 min-w-0 justify-center items-center gap-4 [@media(min-width:1075px)]:gap-10'>
           <div className="[@media(max-width:1075px)]:hidden flex gap-4">
             <TypeToggle type={type} />
             <GenreFilterClient genres={genres} type={type} />
             <RatingFilterClient />
           </div>
-            <div className="">
+            <div className="flex-1 min-w-0 max-w-[500px]">
              <SearchForm/>
             </div> 
         </div>
-      <div className='flex items-center gap-4'>
+      <div className='flex shrink-0 items-center gap-4 pl-3 pr-3 [@media(min-width:1075px)]:pl-0 [@media(min-width:1075px)]:pr-0'>
        {session ? (
         <>
         <p className="[@media(max-width:925px)]:hidden text-xl">{session.user?.name}</p>
         <form action="/api/auth/signout" method="post">
           <button
             type="submit"
-            className="bg-red-500/90 text-white px-6 py-2 rounded-full hover:bg-red-500 transition cursor-pointer"
+            className="bg-red-500/90 text-white px-4 [@media(min-width:1075px)]:px-6 py-2 rounded-full hover:bg-red-500 transition cursor-pointer"
           >
             Logout
           </button>
@@ -85,7 +85,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
         </>
        ) : (
           <Link href="/login">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-500 transition cursor-pointer">
+            <button className="bg-blue-600 text-white px-4 [@media(min-width:1075px)]:px-6 py-2 rounded-full hover:bg-blue-500 transition cursor-pointer">
               Login
             </button>
           </Link>
