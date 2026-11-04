@@ -33,17 +33,19 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
 
   return (
     <Link href={imdbUrl} target="_blank">
-      <div className='group p-3 rounded w-60 transition-transform duration-300 hover:scale-110 relative'>
+      <div className='group w-52 rounded-xl overflow-hidden shadow-lg shadow-black/40 transition duration-300 hover:scale-105 hover:z-10 relative'>
         {poster_path && (
           <img
             src={`https://image.tmdb.org/t/p/w500${poster_path}`}
             alt={title}
-            className="mt-2 rounded h-[350px]"
+            className="block w-full aspect-[2/3] object-cover"
           />
         )}
+        {/* Dunkler Verlauf, damit der Button beim Hover gut lesbar ist */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 pointer-events-none" />
         {/* Ratings (nur sichtbar, wenn nach Rating gefiltert wird) */}
         {(movie.imdb_rating || movie.metascore) && (
-          <div className="absolute top-4 left-5 bg-black/70 text-white text-sm px-2 py-1 rounded">
+          <div className="absolute top-2 left-2 bg-black/70 backdrop-blur text-white text-xs px-2 py-1 rounded-full">
             {movie.imdb_rating && <span>⭐ {movie.imdb_rating}</span>}
             {movie.metascore && <span className="ml-2">MC {movie.metascore}</span>}
           </div>
@@ -66,7 +68,7 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
         )}
 
         {showMessage && (
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-green-600 text-white text-sm p-2 rounded shadow transition">
+          <div className="absolute top-12 left-1/2 -translate-x-1/2 bg-green-600 text-white text-sm px-3 py-1 rounded-full shadow transition">
             Movie added!
           </div>
         )}

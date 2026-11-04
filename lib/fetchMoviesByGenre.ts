@@ -1,6 +1,5 @@
 import type { MovieBasic, MovieWithImdb } from "./fetchMovies";
 import type { MediaType } from "@/types/movieAPI";
-
 type TMDBListResponse = {
   results: MovieBasic[];
 };

@@ -4,24 +4,24 @@
 @tailwind utilities;
 
 :root {
-  --background: #3b3b3b;
-  --foreground: #d1d1d1;
+  --background: #030712;
+  --foreground: #e5e7eb;
 }
 
 @layer base {
   body {
-    @apply bg-[#3b3b3b];
+    @apply bg-gray-950;
   }
 }
 
 @layer components {
   .addButton {
-     @apply mt-2 absolute bottom-2 left-1/2 w-40 -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-600 cursor-pointer
-            opacity-0 group-hover:opacity-80 transition-opacity
+     @apply absolute bottom-2 left-1/2 w-40 -translate-x-1/2 bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-500 cursor-pointer
+            opacity-0 group-hover:opacity-100 transition-opacity
   }
   .deleteButton {
-    @apply  bg-red-800 text-white px-4 py-2 rounded hover:bg-red-600 absolute bottom-6 left-1/2 w-40 -translate-x-1/2 cursor-pointer
-            opacity-0 group-hover:opacity-80 transition-opacity
+    @apply  bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-500 absolute bottom-2 left-1/2 w-40 -translate-x-1/2 cursor-pointer
+            opacity-0 group-hover:opacity-100 transition-opacity
   }
 }
 
@@ -46,8 +46,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #030712;
+    --foreground: #e5e7eb;
   }
 }
 

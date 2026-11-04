@@ -17,16 +17,16 @@ export default function TypeToggle({ type }: { type: MediaType }) {
   const tvHref = `/?${params.toString()}`;
 
   return (
-    <div className="flex rounded overflow-hidden [@media(max-width:1075px)]:border-1">
+    <div className="flex bg-white/10 rounded-full p-1">
       <Link
         href={movieHref}
-        className={`${type === "movie" ? "bg-blue-800" : "bg-blue-600"} text-white px-4 py-2 hover:bg-blue-700 transition cursor-pointer`}
+        className={`${type === "movie" ? "bg-blue-600 text-white" : "text-gray-300 hover:text-white"} px-4 py-1 rounded-full transition cursor-pointer`}
       >
         Filme
       </Link>
       <Link
         href={tvHref}
-        className={`${type === "tv" ? "bg-blue-800" : "bg-blue-600"} text-white px-4 py-2 hover:bg-blue-700 transition cursor-pointer`}
+        className={`${type === "tv" ? "bg-blue-600 text-white" : "text-gray-300 hover:text-white"} px-4 py-1 rounded-full transition cursor-pointer`}
       >
         Serien
       </Link>

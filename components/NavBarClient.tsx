@@ -19,7 +19,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
     const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className='bg-gray-950 flex justify-between items-center sticky py-2 top-0 h-15 w-full z-25 [@media(min-width:1075px)]:px-2'>
+    <div className='bg-gray-950/80 backdrop-blur-md border-b border-white/10 flex justify-between items-center sticky py-2 top-0 h-15 w-full z-25 [@media(min-width:1075px)]:px-2'>
       {/* --- MOBILE HEADER --- */}
      <div className="relative left-0 flex px-4 h-16 [@media(min-width:1075px)]:hidden">
       <button
@@ -36,7 +36,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
         {menuOpen && (
             <div className="absolute top-[62px] left-0">
                 <Link href="/watchlist">
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded border-1 hover:bg-blue-700 transition cursor-pointer">
+                    <button className="bg-white/10 text-white px-4 py-2 rounded-full hover:bg-white/20 transition cursor-pointer">
                       Watchlist
                     </button>
                 </Link>
@@ -56,7 +56,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
 
 
       <Link href="/watchlist">
-        <button className="[@media(max-width:1075px)]:hidden bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer">
+        <button className="[@media(max-width:1075px)]:hidden bg-white/10 text-white px-4 py-2 rounded-full hover:bg-white/20 transition cursor-pointer">
           Watchlist
         </button>
       </Link>
@@ -77,7 +77,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
         <form action="/api/auth/signout" method="post">
           <button
             type="submit"
-            className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition cursor-pointer"
+            className="bg-red-500/90 text-white px-6 py-2 rounded-full hover:bg-red-500 transition cursor-pointer"
           >
             Logout
           </button>
@@ -85,7 +85,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
         </>
        ) : (
           <Link href="/login">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition cursor-pointer">
+            <button className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-500 transition cursor-pointer">
               Login
             </button>
           </Link>

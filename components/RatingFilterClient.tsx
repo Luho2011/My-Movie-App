@@ -24,12 +24,12 @@ export default function RatingFilterClient() {
       onMouseLeave={() => setOpen(false)}
       className="relative inline-block"
     >
-      <button className="bg-blue-600 text-white px-[22px] py-2 rounded [@media(max-width:1075px)]:border-1 hover:bg-blue-700 transition cursor-pointer">
+      <button className="bg-white/10 text-white px-[22px] py-2 rounded-full hover:bg-white/20 transition cursor-pointer">
         Ratings
       </button>
 
       {open && (
-        <div className="absolute left-0 mt-0 bg-black shadow-md rounded p-3 space-y-3 z-10 w-48 text-white">
+        <div className="absolute left-0 mt-0 bg-gray-900 border border-white/10 shadow-xl rounded-xl p-3 space-y-3 z-10 w-48 text-white">
           <label className="block">
             IMDb ab
             <select

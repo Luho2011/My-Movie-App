@@ -6,7 +6,6 @@ import { prisma } from '@/lib/prisma';
 import { WatchlistDB } from '@/types/watchlistDB';
 import MovieCard from "@/components/MovieCard";
 
-
 export default async function WatchlistPage() {
     const session = await getServerSession(authOptions);
     
@@ -27,9 +26,9 @@ export default async function WatchlistPage() {
 
   return (
     <div>
-      <div className='bg-gray-950 flex justify-between sticky top-0 h-15 w-full p-2 z-10'>
+      <div className='bg-gray-950/80 backdrop-blur-md border-b border-white/10 flex justify-between sticky top-0 h-15 w-full p-2 z-10'>
         <Link href="/">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer">
+          <button className="bg-white/10 text-white px-4 py-2 rounded-full hover:bg-white/20 transition cursor-pointer">
             Homepage
           </button>
         </Link>
@@ -38,7 +37,7 @@ export default async function WatchlistPage() {
             <form action="/api/auth/signout" method="post">
               <button
                 type="submit"
-                className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 transition cursor-pointer"
+                className="bg-red-500/90 text-white px-6 py-2 rounded-full hover:bg-red-500 transition cursor-pointer"
               >
                 Logout
               </button>
@@ -47,8 +46,8 @@ export default async function WatchlistPage() {
       </div>
 
      <div className="flex flex-col items-center mt-5">
-      <h1 className="text-5xl mb-5">Meine Watchlist</h1>
-        <div className="flex flex-wrap justify-center gap-3 p-2 mt-8">
+      <h1 className="text-4xl font-semibold text-white mb-5">Meine Watchlist</h1>
+        <div className="flex flex-wrap justify-center gap-6 p-4 mt-8">
           {watchlist.map((movie) => (
             <MovieCard
               key={movie.id}
@@ -57,8 +56,7 @@ export default async function WatchlistPage() {
                 title: movie.title,
                 poster_path: movie.poster_path ?? movie.posterPath ?? null,
                 imdb_id: movie.imdbId ?? null,
-                media_type: movie.mediaType === 'tv' ? 'tv' : 'movie',
-              }}
+                media_type: movie.mediaType === 'tv' ? 'tv' : 'movie',              }}
               userEmail={email}
               isWatchlist={true}
             />
