@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { fetchMovies } from '@/lib/fetchMovies';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -14,6 +15,7 @@ type SearchParams = {
   type?: string;
   imdb?: string;
   meta?: string;
+  pages?: string;
 };
 
 type Props = {
@@ -45,10 +47,20 @@ export default async function HomePage({ searchParams }: Props) {
   const minMeta = Number(params.meta) || 0;
   const isSearching = query || genre || minImdb || minMeta;
 
+  // Wie viele Seiten geladen werden ("Mehr laden" erhöht ?pages)
+  const pageCount = Math.min(Number(params.pages) || 1, 10);
+
   // Wenn query, genre ODER rating-filter aktiv ist → Movies suchen
-  const movies: MovieAPI[] = isSearching
-    ? await fetchMovies(query, genre, type, minImdb, minMeta)
-    : [];
+  const { movies, hasMore }: { movies: MovieAPI[]; hasMore: boolean } = isSearching
+    ? await fetchMovies(query, genre, type, minImdb, minMeta, pageCount)
+    : { movies: [], hasMore: false };
+
+  // Link für "Mehr laden": aktuelle Params + eine Seite mehr
+  const moreParams = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    if (value && key !== "pages") moreParams.set(key, value);
+  }
+  moreParams.set("pages", String(pageCount + 1));
 
   // Genre-Slider nur laden, wenn NICHT gesucht wird
   const genreSections: { name: string; movies: MovieAPI[] }[] = [];
@@ -78,6 +90,16 @@ export default async function HomePage({ searchParams }: Props) {
             <MovieCard key={movie.id} movie={movie} userEmail={email} />
           ))}
         </div>
+      )}
+
+      {isSearching && hasMore && pageCount < 10 && (
+        <Link
+          href={`/?${moreParams.toString()}`}
+          scroll={false}
+          className="bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-full transition mb-8"
+        >
+          Mehr laden
+        </Link>
       )}
 
       {/* Wenn KEINE Suche → Genre-Slider anzeigen */}

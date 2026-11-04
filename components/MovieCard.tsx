@@ -3,8 +3,8 @@ import { useActionState } from 'react';
 import { addToWatchlist } from '@/app/actions/watchlist';
 import React from 'react';
 import { MovieAPI } from '@/types/movieAPI';
-import Link from 'next/link';
 import DeleteButton from './DeleteButton';
+import DetailModal from './DetailModal';
 
 type Props = {
   movie: MovieAPI;
@@ -16,6 +16,7 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
   const { id, title, poster_path } = movie;
   const [state, formAction] = useActionState(addToWatchlist, { message: '' });
   const [showMessage, setShowMessage] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
 
    React.useEffect(() => {
     if (state.message) {
@@ -25,15 +26,9 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
     }
   }, [state.message]);
 
-  //Imdb link entweder nach id oder titel des films...unten als link aufrufen
-  const imdbUrl = movie.imdb_id
-  ? `https://www.imdb.com/title/${movie.imdb_id}/`
-  : `https://www.imdb.com/find?q=${encodeURIComponent(movie.title)}`;
-
-
   return (
-    <Link href={imdbUrl} target="_blank">
-      <div className='group w-52 rounded-xl overflow-hidden shadow-lg shadow-black/40 transition duration-300 hover:scale-105 hover:z-10 relative'>
+    <>
+      <div onClick={() => setOpen(true)} className='cursor-pointer group w-52 rounded-xl overflow-hidden shadow-lg shadow-black/40 transition duration-300 hover:scale-105 hover:z-10 relative'>
         {poster_path && (
           <img
             src={`https://image.tmdb.org/t/p/w500${poster_path}`}
@@ -52,9 +47,11 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
         )}
         {/* Prüfen, ob movie schon in watchlist ist, dann deletebutton anzeigen...sonst addbutton */}
         {isWatchlist ? (
-          <DeleteButton movie={movie} userEmail={userEmail} />
+          <div onClick={(e) => e.stopPropagation()}>
+            <DeleteButton movie={movie} userEmail={userEmail} />
+          </div>
         ) : (
-          <form action={formAction} className="absolute bottom-2 left-1/2 -translate-x-1/2">
+          <form action={formAction} onClick={(e) => e.stopPropagation()} className="absolute bottom-2 left-1/2 -translate-x-1/2">
             <button type="submit" className="addButton">
               Add to Watchlist
             </button>
@@ -73,6 +70,8 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
           </div>
         )}
       </div>
-    </Link>
+
+      {open && <DetailModal movie={movie} onClose={() => setOpen(false)} />}
+    </>
   );
 }

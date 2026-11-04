@@ -4,6 +4,7 @@ import { fetchRatings } from "./fetchRatings";
 // Serien haben bei TMDB "name" statt "title"
 type TMDBListResponse = {
   results: (Omit<MovieAPI, "imdb_id"> & { name?: string })[];
+  total_pages: number;
 };
 
 // Basis-Typ ohne imdb_id
@@ -17,8 +18,9 @@ export async function fetchMovies(
   genre?: string,
   type: MediaType = "movie",
   minImdb = 0,
-  minMeta = 0
-): Promise<MovieAPI[]> {
+  minMeta = 0,
+  pageCount = 1
+): Promise<{ movies: MovieAPI[]; hasMore: boolean }> {
   const apiKey = process.env.TMDB_API_KEY;
   const hasRatingFilter = minImdb > 0 || minMeta > 0;
 
@@ -35,20 +37,27 @@ export async function fetchMovies(
     url = `https://api.themoviedb.org/3/discover/${type}?api_key=${apiKey}&language=de-DE&sort_by=popularity.desc`;
   }
 
-  // mit Rating-Filter 2 Seiten laden, weil danach aussortiert wird
-  const pages = hasRatingFilter ? [1, 2] : [1];
+  // mit Rating-Filter pro Schritt 2 Seiten laden, weil danach aussortiert wird
+  const pageTotal = hasRatingFilter ? pageCount * 2 : pageCount;
+  const pages = Array.from({ length: pageTotal }, (_, i) => i + 1);
   const responses = await Promise.all(
     pages.map(async (page): Promise<TMDBListResponse> => {
       const res = await fetch(`${url}&page=${page}`, { next: { revalidate: 3600 } });
       return res.json();
     })
   );
-  const movies = responses.flatMap((r) => r.results);
+  // doppelte Titel über mehrere Seiten entfernen
+  const movies = responses
+    .flatMap((r) => r.results)
+    .filter((m, i, arr) => arr.findIndex((x) => x.id === m.id) === i);
+  // gibt es noch weitere Seiten, die man nachladen kann?
+  const hasMore = pageTotal < responses[0].total_pages;
 
   const detailPromises = movies.map(async (m): Promise<MovieAPI> => {
     // fetche alle von tmdb bereitgestellten external ids (imdb_id)
     const r2 = await fetch(
-      `https://api.themoviedb.org/3/${type}/${m.id}/external_ids?api_key=${apiKey}`
+      `https://api.themoviedb.org/3/${type}/${m.id}/external_ids?api_key=${apiKey}`,
+      { next: { revalidate: 3600 } }
     );
     // in ext die imdb_id speichern und im spread operator anhängen
     const ext: { imdb_id: string | null } = await r2.json();
@@ -66,10 +75,13 @@ export async function fetchMovies(
   });
 
   const all = await Promise.all(detailPromises);
-  if (!hasRatingFilter) return all;
+  if (!hasRatingFilter) return { movies: all, hasMore };
 
   // Titel ohne Rating fliegen raus, sobald ein Filter aktiv ist
-  return all.filter(
-    (m) => (m.imdb_rating ?? 0) >= minImdb && (m.metascore ?? 0) >= minMeta
-  );
+  return {
+    movies: all.filter(
+      (m) => (m.imdb_rating ?? 0) >= minImdb && (m.metascore ?? 0) >= minMeta
+    ),
+    hasMore,
+  };
 }

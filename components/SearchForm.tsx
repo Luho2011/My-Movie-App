@@ -21,6 +21,7 @@ export default function SearchForm() {
 
       //aktuelle url holen, welche leer ist
       const params = new URLSearchParams(searchParams.toString());
+      params.delete("pages"); // neue Suche startet wieder bei Seite 1
 
       if (cleaned.length > 0) {
         //params: setzt query in url

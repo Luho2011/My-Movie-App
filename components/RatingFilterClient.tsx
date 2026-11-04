@@ -10,6 +10,7 @@ export default function RatingFilterClient() {
   // Wert in url setzen (leer = Filter entfernen), alle anderen params bleiben
   const setParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
+    params.delete('pages'); // neuer Filter startet wieder bei Seite 1
     if (value) {
       params.set(key, value);
     } else {
