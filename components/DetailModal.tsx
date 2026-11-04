@@ -36,11 +36,11 @@ export default function DetailModal({ movie, onClose }: Props) {
   return createPortal(
     <div
       onClick={(e) => { e.stopPropagation(); onClose(); }}
-      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-hidden"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-gray-900 border border-white/10 rounded-2xl"
+        className="relative w-full min-w-0 max-w-3xl max-h-[90dvh] overflow-y-auto overflow-x-hidden hide-scrollbar bg-gray-900 border border-white/10 rounded-2xl"
       >
         <button
           onClick={(e) => { e.stopPropagation(); onClose(); }}

@@ -19,7 +19,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
     const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className='bg-gray-950/80 backdrop-blur-md border-b border-white/10 flex justify-between items-center sticky py-2 top-0 h-15 w-full z-25 [@media(min-width:1075px)]:px-2'>
+    <div className='bg-gray-950/90 backdrop-blur-md border-b border-white/10 flex justify-between items-center sticky py-2 top-0 h-15 w-full z-25 [@media(min-width:1075px)]:px-2'>
       {/* --- MOBILE HEADER --- */}
      <div className="relative left-0 flex px-4 h-16 [@media(min-width:1075px)]:hidden">
       <button
@@ -34,7 +34,7 @@ export default function NavBarClient({ session, genres, type }: NavBarClientProp
         )}
       </button>
         {menuOpen && (
-            <div className="absolute top-[62px] left-0">
+            <div className="absolute top-[62px] left-0 flex flex-col gap-3 p-3 rounded-xl bg-gray-950/95 backdrop-blur-md border border-white/10 shadow-xl shadow-black/60">
                 <Link href="/watchlist">
                     <button className="bg-white/10 text-white px-4 py-2 rounded-full hover:bg-white/20 transition cursor-pointer">
                       Watchlist
