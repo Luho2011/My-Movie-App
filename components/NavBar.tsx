@@ -2,19 +2,16 @@ import React from 'react'
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import NavBarClient from "./NavBarClient";
+import { fetchGenres } from '@/lib/fetchGenres';
+import { MediaType } from '@/types/movieAPI';
 
 
-export default async function NavBar() {
-   const session = await getServerSession(authOptions);
+export default async function NavBar({ type }: { type: MediaType }) {
+  const session = await getServerSession(authOptions);
 
-  const apiKey = process.env.TMDB_API_KEY;
-  const res = await fetch(
-    `https://api.themoviedb.org/3/genre/movie/list?language=de-DE&api_key=${apiKey}`
-  );
+  // Genres passend zu Filme oder Serien
+  const genres = await fetchGenres(type);
 
-  const data = await res.json();
-  const genres = data.genres || [];
-
-  return <NavBarClient session={session} genres={genres} />;
+  return <NavBarClient session={session} genres={genres} type={type} />;
 
 }

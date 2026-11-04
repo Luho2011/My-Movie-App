@@ -5,5 +5,6 @@ export type WatchlistDB = {
   title: string;
   posterPath: string | null;   
   poster_path?: string | null;    
-  imdbId: string | null;         
+  imdbId: string | null;
+  mediaType: string;
 };

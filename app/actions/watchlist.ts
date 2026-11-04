@@ -9,13 +9,15 @@ export async function addToWatchlist(prevState: unknown, formData: FormData) {
   const posterPath = formData.get('posterPath') as string;
   const imdbId = formData.get('imdbId') as string | null;
   const email = formData.get('email') as string;
+  const mediaType = (formData.get('mediaType') as string) || 'movie';
 
   await prisma.watchlist.create({
     data: {
       movieId,
       title,
       posterPath,
-      imdbId,   
+      imdbId,
+      mediaType,
       user: { connect: { email } },
     },
   });
@@ -28,10 +30,12 @@ export async function addToWatchlist(prevState: unknown, formData: FormData) {
 export async function removeFromWatchlist(_: unknown, formData: FormData) {
   const movieId = formData.get('movieId') as string;
   const email = formData.get('email') as string;
+  const mediaType = (formData.get('mediaType') as string) || 'movie';
 
   await prisma.watchlist.deleteMany({
     where: {
       movieId: movieId,
+      mediaType: mediaType,
       user: {
         email: email,
       },

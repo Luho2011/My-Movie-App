@@ -56,7 +56,8 @@ export default async function WatchlistPage() {
                 id: Number(movie.movieId), // TMDB-ID
                 title: movie.title,
                 poster_path: movie.poster_path ?? movie.posterPath ?? null,
-                imdb_id: movie.imdbId ?? null, 
+                imdb_id: movie.imdbId ?? null,
+                media_type: movie.mediaType === 'tv' ? 'tv' : 'movie',
               }}
               userEmail={email}
               isWatchlist={true}

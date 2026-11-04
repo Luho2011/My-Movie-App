@@ -1,10 +1,12 @@
-export async function fetchGenres() {
+import type { MediaType } from "@/types/movieAPI";
+
+export async function fetchGenres(type: MediaType = "movie") {
   const apiKey = process.env.TMDB_API_KEY;
 
   const res = await fetch(
-    `https://api.themoviedb.org/3/genre/movie/list?language=de-DE&api_key=${apiKey}`
+    `https://api.themoviedb.org/3/genre/${type}/list?language=de-DE&api_key=${apiKey}`
   );
 
   const data = await res.json();
-  return data.genres;
+  return data.genres || [];
 }

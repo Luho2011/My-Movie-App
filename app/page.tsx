@@ -11,6 +11,7 @@ import MovieSlider from '@/components/MovieSlider';
 type SearchParams = {
   query?: string;
   genre?: string;
+  type?: string;
 };
 
 type Props = {
@@ -34,21 +35,23 @@ export default async function HomePage({ searchParams }: Props) {
 
   const query = params.query?.trim() || "";
   const genre = params.genre || "";
+  // Filme oder Serien (?type=tv)
+  const type = params.type === "tv" ? "tv" : "movie";
 
   // Wenn query ODER genre aktiv ist → Movies suchen
   const movies: MovieAPI[] =
-    query || genre ? await fetchMovies(query, genre) : [];
+    query || genre ? await fetchMovies(query, genre, type) : [];
 
   // Genre-Slider nur laden, wenn NICHT gesucht wird
   const genreSections: { name: string; movies: MovieAPI[] }[] = [];
 
   if (!query && !genre) {
-    const allGenres = await fetchGenres();
+    const allGenres = await fetchGenres(type);
     const randomGenres = pickRandomGenres(allGenres, 7);
 
     //Über die randomGenres mappen und in genreSections pushen 
     for (const g of randomGenres) {
-      const moviesByGenre = await fetchMoviesByGenre(g.id, 20);
+      const moviesByGenre = await fetchMoviesByGenre(g.id, 20, type);
       genreSections.push({
         name: g.name,
         movies: moviesByGenre,
@@ -58,7 +61,7 @@ export default async function HomePage({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <NavBar />
+      <NavBar type={type} />
 
       {/* Wenn Suchbegriff aktiv → Suchergebnisse anzeigen */}
       {(query || genre) && (

@@ -1,13 +1,14 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import { MediaType } from '@/types/movieAPI';
 
 type Genre = {
   id: number;
   name: string;
 };
 
-export default function GenreFilterClient({ genres }: { genres: Genre[] }) {
+export default function GenreFilterClient({ genres, type = 'movie' }: { genres: Genre[]; type?: MediaType }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -25,7 +26,7 @@ export default function GenreFilterClient({ genres }: { genres: Genre[] }) {
           {genres.map((genre) => (
             <Link
               key={genre.id}
-              href={`/?genre=${genre.id}`}
+              href={type === 'tv' ? `/?genre=${genre.id}&type=tv` : `/?genre=${genre.id}`}
               className="block px-2 py-1 hover:bg-gray-800 rounded text-white"
             >
               {genre.name}

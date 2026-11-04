@@ -61,7 +61,8 @@ model Watchlist {
   title   String
   poster_path String?
   posterPath  String?
-  imdbId      String? 
+  imdbId      String?
+  mediaType   String  @default("movie")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

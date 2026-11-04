@@ -9,6 +9,7 @@ export default function SearchForm() {
   // query aus url lesen
   const currentQuery = searchParams.get("query") || "";
   const [input, setInput] = useState(currentQuery);
+  const isTv = searchParams.get("type") === "tv";
 
   //live suche mit liveupdates der angezeigen Filme
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function SearchForm() {
     <div className="justify-center">
       <input
         className="[@media(max-width:750px)]:w-[250px] h-[41px] w-[500px] pl-4 pr-4 py-1 border rounded-2xl border-gray-300 focus:outline-none"
-        placeholder="Search Movie..."
+        placeholder={isTv ? "Search Series..." : "Search Movie..."}
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />

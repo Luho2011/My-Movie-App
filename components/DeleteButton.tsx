@@ -22,6 +22,7 @@ export default function DeleteButton({ movie, userEmail }: Props) {
       </div> 
       <input type="hidden" name="movieId" value={id} />
       <input type="hidden" name="email" value={userEmail} />
+      <input type="hidden" name="mediaType" value={movie.media_type ?? 'movie'} />
     </form>
   );
 }

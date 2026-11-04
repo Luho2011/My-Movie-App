@@ -5,13 +5,16 @@ import { useState } from "react";
 import SearchForm from "./SearchForm";
 import GenreFilterClient from "./GenreFilterClient";
 import { Session } from "next-auth";
+import TypeToggle from "./TypeToggle";
+import { MediaType } from "@/types/movieAPI";
 
 type NavBarClientProps = {
   session: Session | null;
   genres: { id: number; name: string }[];
+  type: MediaType;
 }
 
-export default function NavBarClient({ session, genres }: NavBarClientProps) {
+export default function NavBarClient({ session, genres, type }: NavBarClientProps) {
     const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -37,7 +40,10 @@ export default function NavBarClient({ session, genres }: NavBarClientProps) {
                     </button>
                 </Link>
                  <div className="">
-                    <GenreFilterClient genres={genres}/>
+                    <TypeToggle type={type} />
+                 </div>
+                 <div className="">
+                    <GenreFilterClient genres={genres} type={type} />
                  </div>
             </div>
         )}
@@ -51,9 +57,10 @@ export default function NavBarClient({ session, genres }: NavBarClientProps) {
         </button>
       </Link>
         <div className='flex gap-10 items-center'>
-          <div className="[@media(max-width:1075px)]:hidden">
-            <GenreFilterClient genres={genres} />
-          </div> 
+          <div className="[@media(max-width:1075px)]:hidden flex gap-4">
+            <TypeToggle type={type} />
+            <GenreFilterClient genres={genres} type={type} />
+          </div>
             <div className="">
              <SearchForm/>
             </div> 

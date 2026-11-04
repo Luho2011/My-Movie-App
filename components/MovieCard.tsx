@@ -54,6 +54,7 @@ export default function MovieCard({ movie, userEmail, isWatchlist }: Props) {
             <input type="hidden" name="posterPath" value={poster_path ?? ''} />
             <input type="hidden" name="email" value={userEmail} />
             <input type="hidden" name="imdbId" value={movie.imdb_id ?? ''} />
+            <input type="hidden" name="mediaType" value={movie.media_type ?? 'movie'} />
           </form>
         )}
 
