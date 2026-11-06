@@ -37,6 +37,8 @@ Web application for searching and displaying movie data using external APIs.
    Creating a persistent watchlist for logged-in users to store favorite movies across sessions.
 
 ## 📸 Screenshots
-![Screenshot movie3](https://github.com/user-attachments/assets/ea53af71-203b-4827-a803-152ed00ed6a3)
-![Screenshot movie2](https://github.com/user-attachments/assets/0574c2ce-2b49-42c5-806a-56766c59301c)
-![Screenshot movie1](https://github.com/user-attachments/assets/c570fc02-9e96-4104-a1f7-3d79652a8b35)
+![Screenshot movie3](https://github.com/user-attachments/assets/38bc5791-8000-4b3e-b48a-127ec3820334)
+
+![Screenshot movie2](https://github.com/user-attachments/assets/108b70b0-d4d3-4684-926b-5cfeb37c1683)
+
+![Screenshot movie1](https://github.com/user-attachments/assets/5a8ea9a4-1c6b-45d5-ab45-8a094b2e779d)
