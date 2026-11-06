@@ -1,5 +1,6 @@
 import type { MovieBasic, MovieWithImdb } from "./fetchMovies";
 import type { MediaType } from "@/types/movieAPI";
+import { safeFetchJson } from "./safeFetchJson";
 type TMDBListResponse = {
   results: MovieBasic[];
 };
@@ -14,13 +15,12 @@ export async function fetchMoviesByGenre(
 ): Promise<MovieWithImdb[]> {
   const apiKey = process.env.TMDB_API_KEY;
 
-  const res = await fetch(
+  const data = await safeFetchJson<TMDBListResponse>(
     `https://api.themoviedb.org/3/discover/${type}?api_key=${apiKey}&language=de-DE&with_genres=${genreId}&sort_by=popularity.desc`,
     { next: { revalidate: 3600 } }
   );
 
-  const data: TMDBListResponse = await res.json();
-  return (data.results ?? []).slice(0, limit).map((m) => ({
+  return (data?.results ?? []).slice(0, limit).map((m) => ({
     ...m,
     title: m.title ?? m.name,
     media_type: type,

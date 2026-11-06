@@ -16,6 +16,7 @@ type SearchParams = {
   imdb?: string;
   meta?: string;
   pages?: string;
+  sort?: string;
 };
 
 type Props = {
@@ -52,7 +53,7 @@ export default async function HomePage({ searchParams }: Props) {
 
   // Wenn query, genre ODER rating-filter aktiv ist → Movies suchen
   const { movies, hasMore }: { movies: MovieAPI[]; hasMore: boolean } = isSearching
-    ? await fetchMovies(query, genre, type, minImdb, minMeta, pageCount)
+    ? await fetchMovies(query, genre, type, minImdb, minMeta, pageCount, params.sort || "")
     : { movies: [], hasMore: false };
 
   // Link für "Mehr laden": aktuelle Params + eine Seite mehr

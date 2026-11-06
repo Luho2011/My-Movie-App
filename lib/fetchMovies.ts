@@ -1,5 +1,6 @@
 import type { MovieAPI, MediaType } from "@/types/movieAPI";
 import { fetchRatings } from "./fetchRatings";
+import { safeFetchJson } from "./safeFetchJson";
 
 // Serien haben bei TMDB "name" statt "title"
 type TMDBListResponse = {
@@ -19,7 +20,8 @@ export async function fetchMovies(
   type: MediaType = "movie",
   minImdb = 0,
   minMeta = 0,
-  pageCount = 1
+  pageCount = 1,
+  sort = ""
 ): Promise<{ movies: MovieAPI[]; hasMore: boolean }> {
   const apiKey = process.env.TMDB_API_KEY;
   const hasRatingFilter = minImdb > 0 || minMeta > 0;
@@ -40,18 +42,19 @@ export async function fetchMovies(
   // mit Rating-Filter pro Schritt 2 Seiten laden, weil danach aussortiert wird
   const pageTotal = hasRatingFilter ? pageCount * 2 : pageCount;
   const pages = Array.from({ length: pageTotal }, (_, i) => i + 1);
-  const responses = await Promise.all(
-    pages.map(async (page): Promise<TMDBListResponse> => {
-      const res = await fetch(`${url}&page=${page}`, { next: { revalidate: 3600 } });
-      return res.json();
-    })
-  );
+  const responses = (
+    await Promise.all(
+      pages.map((page) =>
+        safeFetchJson<TMDBListResponse>(`${url}&page=${page}`, { next: { revalidate: 3600 } })
+      )
+    )
+  ).filter((r): r is TMDBListResponse => r !== null);
   // doppelte Titel über mehrere Seiten entfernen
   const movies = responses
-    .flatMap((r) => r.results)
+    .flatMap((r) => r.results ?? [])
     .filter((m, i, arr) => arr.findIndex((x) => x.id === m.id) === i);
   // gibt es noch weitere Seiten, die man nachladen kann?
-  const hasMore = pageTotal < responses[0].total_pages;
+  const hasMore = pageTotal < (responses[0]?.total_pages ?? 0);
 
   // Ohne Rating-Filter: imdb_id nicht vorab laden (kommt lazy über Details / Watchlist)
   if (!hasRatingFilter) {
@@ -61,14 +64,13 @@ export async function fetchMovies(
     };
   }
 
-  const detailPromises = movies.map(async (m): Promise<MovieAPI> => {
+  const loadDetails = async (m: (typeof movies)[number]): Promise<MovieAPI> => {
     // imdb_id wird für OMDb gebraucht → external ids von tmdb holen
-    const r2 = await fetch(
+    const ext = await safeFetchJson<{ imdb_id: string | null }>(
       `https://api.themoviedb.org/3/${type}/${m.id}/external_ids?api_key=${apiKey}`,
       { next: { revalidate: 86400 } }
     );
-    const ext: { imdb_id: string | null } = await r2.json();
-    const imdbId = ext.imdb_id ?? null;
+    const imdbId = ext?.imdb_id ?? null;
 
     const ratings = await fetchRatings(imdbId);
     return {
@@ -79,15 +81,35 @@ export async function fetchMovies(
       imdb_rating: ratings.imdbRating,
       metascore: ratings.metascore,
     };
-  });
+  };
 
-  const all = await Promise.all(detailPromises);
+  // Details in Batches laden, damit nicht hunderte Requests gleichzeitig laufen (Rate-Limits)
+  const BATCH_SIZE = 20;
+  const all: MovieAPI[] = [];
+  for (let i = 0; i < movies.length; i += BATCH_SIZE) {
+    const batch = await Promise.all(movies.slice(i, i + BATCH_SIZE).map(loadDetails));
+    all.push(...batch);
+  }
 
   // Titel ohne Rating fliegen raus, sobald ein Filter aktiv ist
-  return {
-    movies: all.filter(
-      (m) => (m.imdb_rating ?? 0) >= minImdb && (m.metascore ?? 0) >= minMeta
-    ),
-    hasMore,
-  };
+  const filtered = all.filter(
+    (m) => (m.imdb_rating ?? 0) >= minImdb && (m.metascore ?? 0) >= minMeta
+  );
+
+  // Sortierung nach Score (sort = "imdb_desc" | "imdb_asc" | "meta_desc" | "meta_asc")
+  const [sortKey, sortDir] = sort.split("_");
+  if ((sortKey === "imdb" || sortKey === "meta") && (sortDir === "desc" || sortDir === "asc")) {
+    const getValue = (m: MovieAPI) => (sortKey === "imdb" ? m.imdb_rating : m.metascore) ?? null;
+    filtered.sort((a, b) => {
+      const va = getValue(a);
+      const vb = getValue(b);
+      // Titel ohne Wert immer ans Ende
+      if (va === null && vb === null) return 0;
+      if (va === null) return 1;
+      if (vb === null) return -1;
+      return sortDir === "desc" ? vb - va : va - vb;
+    });
+  }
+
+  return { movies: filtered, hasMore };
 }

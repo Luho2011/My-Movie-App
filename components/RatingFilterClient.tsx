@@ -10,14 +10,19 @@ export default function RatingFilterClient() {
   // Wert in url setzen (leer = Filter entfernen), alle anderen params bleiben
   const setParam = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    params.delete('pages'); // neuer Filter startet wieder bei Seite 1
+    // neuer Filter startet wieder bei Seite 1 (bei reiner Sortierung bleiben die Seiten erhalten)
+    if (key !== 'sort') params.delete('pages');
     if (value) {
       params.set(key, value);
     } else {
       params.delete(key);
     }
+    // ohne Rating-Filter gibt es keine Scores → Sortierung entfernen
+    if (!params.get('imdb') && !params.get('meta')) params.delete('sort');
     router.push(`/?${params.toString()}`);
   };
+
+  const hasRatingFilter = Boolean(searchParams.get('imdb') || searchParams.get('meta'));
 
   return (
     <div
@@ -57,8 +62,25 @@ export default function RatingFilterClient() {
               <option value="60">60+</option>
               <option value="70">70+</option>
               <option value="80">80+</option>
+              <option value="90">90+</option>
             </select>
           </label>
+          {hasRatingFilter && (
+            <label className="block">
+              Sortierung
+              <select
+                value={searchParams.get('sort') || ''}
+                onChange={(e) => setParam('sort', e.target.value)}
+                className="block w-full mt-1 bg-gray-800 rounded px-2 py-1"
+              >
+                <option value="">Standard</option>
+                <option value="imdb_desc">IMDb ↓ (höchste zuerst)</option>
+                <option value="imdb_asc">IMDb ↑ (niedrigste zuerst)</option>
+                <option value="meta_desc">Metascore ↓</option>
+                <option value="meta_asc">Metascore ↑</option>
+              </select>
+            </label>
+          )}
         </div>
       )}
     </div>
